@@ -79,9 +79,13 @@ def format_entities(wit_response, req_body):
     wit_resp = {"command" : get_with_default(wit_response["entities"], "intent", None), 
                 "table_name" : nlu_stuff(get_nth_value(get_with_default(wit_response["entities"], "table_name", None), 0), table_list),
                 "conditions" : get_with_default(wit_response["entities"], "datetime", None)}
-    formatted_resp = {"command_type" : get_nth_value(wit_resp["command"], 0), 
-                      "table_name" : wit_resp["table_name"],
-                      "conditions" : get_nth_value(wit_resp["conditions"], 0)}
+    formatted_resp = {
+                      "table_name" : wit_resp["table_name"] }
+    if wit_resp["conditions"] is not None:
+        formatted_resp["conditions"] = get_nth_value(wit_resp["conditions"], 0)
+    if wit_resp["command"] is not None:
+        formatted_resp["command_type"] = get_nth_value(wit_resp["command"], 0)
+    
     for db in req_body:
         if formatted_resp["table_name"] in db["tables"]:
             formatted_resp["db_name"] = db["database"]
