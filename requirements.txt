@@ -1,2 +1,4 @@
-wit==2.22.0
+wit
 flask==1.0.3
+fuzzywuzzy
+nltk
